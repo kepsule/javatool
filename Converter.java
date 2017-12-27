@@ -37,10 +37,10 @@ public class Converter {
 		// 1行ずつCSVファイルを読み込む
 		while ((line = br.readLine()) != null) {
 			byte[] b = line.getBytes();
-           line = new String(b, "UTF-8");
-           String[] columns = line.split(",",-1);
+          		line = new String(b, "UTF-8");
+           		String[] columns = line.split(",",-1);
 
-           for (int j = 0; j < columns.length; j++) {
+           		for (int j = 0; j < columns.length; j++) {
 				System.out.println("ファイル読み込みSJIS⇒UTF8");
 				System.out.println(columns[j] + "\n");
 			}
