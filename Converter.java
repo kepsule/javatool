@@ -28,25 +28,20 @@ public class Converter {
 		System.out.println("UTF-8⇒MS932変換");
 		System.out.println(utf8TargetMs + "\n");
 
-		File f = new File("読み込むファイルのパス");
-		FileInputStream input = new FileInputStream(f);
-		InputStreamReader stream = new InputStreamReader(input,"MS932");
-		BufferedReader br = new BufferedReader(stream);
+		try (BufferedReader br = new BufferedReader(
+			new InputStreamReader(new FileInputStream(
+				new File("読み込むファイルのパス")), "MS932"))) {
 
-		String line;
-		// 1行ずつCSVファイルを読み込む
-		while ((line = br.readLine()) != null) {
-			byte[] b = line.getBytes();
-          		line = new String(b, "UTF-8");
-           		String[] columns = line.split(",",-1);
-
-           		for (int j = 0; j < columns.length; j++) {
-				System.out.println("ファイル読み込みSJIS⇒UTF8");
-				System.out.println(columns[j] + "\n");
-			}
+			br.lines().map(line -> line.split(",", -1))
+				.forEach(commaSeparated -> Arrays.asList(commaSeparated).forEach(letter -> {
+				try {
+					System.out.println(new String(letter.getBytes(), "UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			}));
 		}
-		br.close();
-
 	}
 
 }
