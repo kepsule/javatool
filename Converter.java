@@ -32,15 +32,16 @@ public class Converter {
 			new InputStreamReader(new FileInputStream(
 				new File("読み込むファイルのパス")), "MS932"))) {
 
-			br.lines().map(line -> line.split(",", -1))
-				.forEach(commaSeparated -> Arrays.asList(commaSeparated).forEach(letter -> {
-				try {
-					System.out.println(new String(letter.getBytes(), "UTF-8"));
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-					throw new RuntimeException(e);
-				}
-			}));
+			br.lines()
+				.flatMap(line -> Stream.of(line.split(",", -1)))
+				.forEach(letter -> {
+					try {
+						System.out.println(new String(letter.getBytes(), "UTF-8"));
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+						throw new RuntimeException(e);
+					}
+				});
 		}
 	}
 
